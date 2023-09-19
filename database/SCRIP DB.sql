@@ -120,5 +120,13 @@ INNER JOIN animales ON animales.idanimal = razas.idanimal
 WHERE mascotas.`idmascota` = _idmascota;
 END $$
 
-CALL spu_consultar_mascotas(3)
+
+DELIMITER $$
+CREATE PROCEDURE spu_login(IN _dni CHAR(8))
+BEGIN 
+SELECT * FROM usuarios
+WHERE dni = _dni;
+END $$
+
+CALL spu_consultar_mascotas()
 
