@@ -18,6 +18,6 @@ if(isset($_POST['operacion'])){
 
 if(isset($_GET['operacion'])){
   if($_GET['operacion']=='search'){
-    echo json_encode($mascota->search(["idmascota" => $_GET['idmascota']]));
+    echo json_encode($mascota->searchPet(["idmascota" => $_GET['idmascota']]));
   }  
 }

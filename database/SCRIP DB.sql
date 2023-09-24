@@ -1,28 +1,30 @@
-CREATE DATABASE dbveterinaria
+DROP DATABASE IF EXISTS dbveterinaria;
 
-USE dbveterinaria
+CREATE DATABASE dbveterinaria;
+
+USE dbveterinaria;
 
 CREATE TABLE cliente
 (
 idcliente 		INT PRIMARY KEY AUTO_INCREMENT,
-apellidos		VARCHAR(30)		NOT NULL,
-nombres			VARCHAR(20) 	NOT NULL,
-dni				CHAR(9)			NOT NULL,
+apellidos		VARCHAR(40)		NOT NULL,
+nombres			VARCHAR(40) 	NOT NULL,
+dni				CHAR(8)			NOT NULL,
 claveacceso		VARCHAR(200) 	NOT NULL
 )ENGINE = INNODB;
 
 CREATE TABLE animales
 (
 idanimal INT PRIMARY KEY AUTO_INCREMENT,
-nombre_animal	VARCHAR(15)
+nombre_animal	VARCHAR(30)
 )ENGINE=INNODB;
 
 
 CREATE TABLE razas
 (
 idraza			INT PRIMARY KEY AUTO_INCREMENT,
-idanimal			INT 	NOT NULL,
-nombre_raza		VARCHAR(20)
+idanimal		INT 	NOT NULL,
+nombre_raza		VARCHAR(20) NOT NULL
 )ENGINE=INNODB;
 
 

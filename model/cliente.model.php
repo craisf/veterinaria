@@ -26,8 +26,21 @@ class Cliente   extends Conexion
       die($e->getMessage());
     }
   }
+  public function login($username)
+  {
+    try {
+      $query = $this->conexion->prepare("CALL spu_login(?)");
+      $query->execute(
+        array($username)
+      );
+      return $query->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 
-  public function search($data = [])
+
+  public function searchDNI($data = [])
   {
     try {
       $query = $this->conexion->prepare("CALL spu_consultar_cliente(?)");
