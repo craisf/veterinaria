@@ -4,11 +4,25 @@ require_once '../model/mascota.model.php';
 $mascota = new Mascota();
 
 if(isset($_POST['operacion'])){
+  
   if($_POST['operacion']=='add'){
+    
+    $uploadDirectory = "";
+    $uploadFilename = "";
+    $uploadFilepath = "";
+  
+    if ($_POST['fotografia'] != ""){
+      $uploadDirectory = "../image";
+      $uploadFilename = sha1(date('c')). '.jpg';
+      $uploadFilepath = $uploadDirectory . $uploadFilename;
+  
+      file_put_contents($uploadFilepath, base64_decode($_POST['fotografia']));
+    }
     $registro =[
       "idcliente" =>$_POST['idcliente'],
       "idraza"=>$_POST['idraza'],
       "nombre"=>$_POST['nombre'],
+      "fotografia" => $uploadFilename,
       "color"=>$_POST['color'],
       "genero"=>$_POST['genero']
     ];
@@ -17,7 +31,17 @@ if(isset($_POST['operacion'])){
 }
 
 if(isset($_GET['operacion'])){
+
   if($_GET['operacion']=='search'){
     echo json_encode($mascota->searchPet(["idmascota" => $_GET['idmascota']]));
-  }  
+  } 
+  
+  if($_GET['operacion']=='searchPetOwner'){
+    echo json_encode($mascota->searchPetOwner(["dni" => $_GET['dni']]));
+  } 
+
+  if($_GET['operacion']=='listRace'){
+    echo json_encode($mascota->listRace());
+  } 
 }
+

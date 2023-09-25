@@ -5,7 +5,7 @@ class Cliente   extends Conexion
 {
   private $conexion;
 
-  public function __construct()
+  public function __CONSTRUCT()
   {
     $this->conexion = parent::getConexion();
   }
@@ -26,6 +26,7 @@ class Cliente   extends Conexion
       die($e->getMessage());
     }
   }
+
   public function login($username)
   {
     try {

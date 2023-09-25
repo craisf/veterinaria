@@ -65,25 +65,19 @@ INSERT INTO mascotas (idcliente, idraza, nombre,color, genero) VALUES
 (2,3,'ASTA','blanco y gris','M'),
 (3,5,'PEZI','rojo','M');
 
-SELECT * FROM cliente
-SELECT * FROM animales
-SELECT * FROM razas
-SELECT * FROM mascotas
-
-
-
 -- registrar mascota
 DELIMITER $$
 CREATE PROCEDURE spu_mascotas_add(
 IN _idcliente INT,
 IN _idraza INT,
 IN _nombre VARCHAR(20),
+IN _fotografia VARCHAR(400),
 IN _color VARCHAR(20),
 IN _genero CHAR(1)
 )
 BEGIN
-INSERT INTO mascotas (idcliente, idraza, nombre,color, genero) VALUES 
-(_idcliente,_idraza,_nombre,_color,_genero);
+INSERT INTO mascotas (idcliente, idraza, nombre,fotografia,color, genero) VALUES 
+(_idcliente,_idraza,_nombre,_fotografia,_color,_genero);
 END $$
 
 -- registrar cleinte
@@ -103,20 +97,25 @@ END $$
 DELIMITER $$
 CREATE PROCEDURE spu_consultar_cliente(IN _dni CHAR(9))
 BEGIN
-SELECT CONCAT(cliente.`apellidos`,', ',cliente.`nombres`) AS Dueño, razas.nombre_raza,
+SELECT 
+mascotas.`idmascota`,
+animales.`nombre_animal` as tipo,
 mascotas.`nombre`
 FROM cliente
 INNER JOIN mascotas ON mascotas.`idcliente` = cliente.`idcliente`
 INNER JOIN razas ON razas.idraza = mascotas.`idraza`
+INNER JOIN animales ON animales.idanimal = razas.idanimal
 WHERE cliente.`dni`=_dni;
 END $$
+
 -- 
 DELIMITER $$
 CREATE PROCEDURE spu_consultar_mascotas(IN _idmascota CHAR(9))
 BEGIN
-SELECT  animales.nombre_animal,razas.nombre_raza,mascotas.`nombre`, mascotas.`fotografia`, mascotas.`color`, mascotas.`genero`
-FROM cliente
-INNER JOIN mascotas ON mascotas.`idcliente` = cliente.`idcliente`
+SELECT  mascotas.idmascota, mascotas.nombre, animales.nombre_animal 'animal',
+		razas.nombre_raza 'raza', mascotas.fotografia, mascotas.color, mascotas.genero
+FROM mascotas
+INNER JOIN cliente ON cliente.idcliente = mascotas.idcliente
 INNER JOIN razas ON razas.idraza = mascotas.`idraza`
 INNER JOIN animales ON animales.idanimal = razas.idanimal
 WHERE mascotas.`idmascota` = _idmascota;
@@ -126,9 +125,32 @@ END $$
 DELIMITER $$
 CREATE PROCEDURE spu_login(IN _dni CHAR(8))
 BEGIN 
-SELECT * FROM usuarios
+SELECT * FROM cliente
 WHERE dni = _dni;
 END $$
 
-CALL spu_consultar_mascotas()
 
+DELIMITER $$
+CREATE PROCEDURE spu_razas_listar()
+BEGIN
+	SELECT 	razas.idraza,
+					CONCAT(animales.nombre_animal, ' - ', razas.nombre_raza) AS 'animalraza'
+		FROM razas
+		INNER JOIN animales ON animales.idanimal = razas.idanimal
+		ORDER BY 2;
+END $$
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_buscar_mascota_cliente(IN _dni CHAR(8))
+BEGIN
+SELECT mascotas.idmascota, animales.nombre_animal AS 'tipo', mascotas.nombre FROM mascotas
+INNER JOIN razas ON razas.idraza = mascotas.idraza
+INNER JOIN animales ON animales.idanimal = razas.idanimal
+INNER JOIN cliente ON cliente.idcliente = mascotas.idcliente
+WHERE dni = _dni;
+END $$
+
+
+
+SELECT * FROM cliente

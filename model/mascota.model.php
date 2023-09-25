@@ -28,6 +28,21 @@ class Mascota  extends Conexion
       die($e->getMessage());
     }
   }
+
+  public function searchPetOwner($data = [])
+  {
+    try {
+      $query = $this->conexion->prepare("CALL spu_buscar_mascota_cliente(?)");
+      $query->execute(
+        array(
+          $data['dni']
+        )
+      );
+      return $query->fetchall(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
   
 
   public function searchPet($data = [])
