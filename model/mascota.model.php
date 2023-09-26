@@ -29,29 +29,29 @@ class Mascota  extends Conexion
     }
   }
 
-  public function searchPetOwner($data = [])
+  public function searchPetOwner($dni)
   {
     try {
       $query = $this->conexion->prepare("CALL spu_buscar_mascota_cliente(?)");
       $query->execute(
         array(
-          $data['dni']
+          $dni
         )
       );
-      return $query->fetchall(PDO::FETCH_ASSOC);
+      return $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
       die($e->getMessage());
     }
   }
   
 
-  public function searchPet($data = [])
+  public function searchPet($idmascota)
   {
     try {
       $query = $this->conexion->prepare("CALL spu_consultar_mascotas(?)");
       $query->execute(
         array(
-          $data['idmascota']
+          $idmascota
         )
       );
       return $query->fetchall(PDO::FETCH_ASSOC);

@@ -33,11 +33,11 @@ if(isset($_POST['operacion'])){
 if(isset($_GET['operacion'])){
 
   if($_GET['operacion']=='search'){
-    echo json_encode($mascota->searchPet(["idmascota" => $_GET['idmascota']]));
+    echo json_encode($mascota->searchPet($_GET['idmascota']));
   } 
   
-  if($_GET['operacion']=='searchPetOwner'){
-    echo json_encode($mascota->searchPetOwner(["dni" => $_GET['dni']]));
+  if($_GET['operacion']== 'searchPetOwner'){
+    echo json_encode($mascota->searchPetOwner($_GET['dni']));
   } 
 
   if($_GET['operacion']=='listRace'){
