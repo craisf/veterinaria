@@ -12,7 +12,7 @@ if(isset($_POST['operacion'])){
     $uploadFilepath = "";
   
     if ($_POST['fotografia'] != ""){
-      $uploadDirectory = "../image";
+      $uploadDirectory = "../image/";
       $uploadFilename = sha1(date('c')). '.jpg';
       $uploadFilepath = $uploadDirectory . $uploadFilename;
   
@@ -21,7 +21,7 @@ if(isset($_POST['operacion'])){
     $registro =[
       "idcliente" =>$_POST['idcliente'],
       "idraza"=>$_POST['idraza'],
-      "nombre"=>$_POST['nombre'],
+      "nombre"=>$_POST['nombreMascota'],
       "fotografia" => $uploadFilename,
       "color"=>$_POST['color'],
       "genero"=>$_POST['genero']
